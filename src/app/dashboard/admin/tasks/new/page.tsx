@@ -3,16 +3,18 @@
 import React, { useState } from "react";
 import { Button, Card } from "@heroui/react";
 import { toast } from "react-toastify";
+import { createTask } from "@/app/lib/actions/tasks";
+import { Priority, Status } from "@/types/createTask";
 
 const NewTask = () => {
   const [taskName, setTaskName] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [priority, setPriority] = useState("Medium");
-  const [status, setStatus] = useState("Pending");
+  const [priority, setPriority] = useState<Priority>("Medium");
+  const [status, setStatus] = useState<Status>("Pending");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if ( !taskName || !assignedTo || !dueDate || !priority || !status || !description ) {
@@ -22,10 +24,6 @@ const NewTask = () => {
 
     const taskData = { taskName, assignedTo, dueDate, priority, status, description, };
 
-    console.log(taskData);
-
-    toast.success("Task created successfully!");
-
     // Reset Form
     setTaskName("");
     setAssignedTo("");
@@ -33,6 +31,15 @@ const NewTask = () => {
     setPriority("Medium");
     setStatus("Pending");
     setDescription("");
+
+
+
+    const res = await createTask(taskData)
+    if(res.insertedId){
+        toast.success("Task posted successfully");
+        e.currentTarget.reset()
+
+    }
   };
 
   return (
@@ -111,7 +118,7 @@ const NewTask = () => {
                     name="priority"
                     value={item}
                     checked={priority === item}
-                    onChange={(e) => setPriority(e.target.value)}
+                    onChange={(e) => setPriority(e.target.value as Priority)}
                     className="accent-blue-600"
                   />
 
@@ -129,7 +136,7 @@ const NewTask = () => {
 
             <select
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={(e) => setStatus(e.target.value as Status)}
               className="h-12 w-full rounded-xl border border-gray-300 px-4 outline-none focus:border-blue-500"
             >
               <option>Pending</option>
