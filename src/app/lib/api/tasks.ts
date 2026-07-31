@@ -1,9 +1,11 @@
-import { CreateTask } from "@/types/createTask";
-
 const serverBaseUrl = process.env.NEXT_PUBLIC_SERVER_URI;
 
-export const getTasks = async ( search: string = ""): Promise<CreateTask[]> => {
-  const res = await fetch( `${serverBaseUrl}/api/tasks?search=${encodeURIComponent(search)}`,
+export const getTasks = async (
+  search = "",
+  page = 1
+) => {
+  const res = await fetch(
+    `${serverBaseUrl}/api/tasks?search=${encodeURIComponent(search)}&page=${page}&limit=5`,
     {
       cache: "no-store",
     }
@@ -15,3 +17,32 @@ export const getTasks = async ( search: string = ""): Promise<CreateTask[]> => {
 
   return res.json();
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const serverBaseUrl = process.env.NEXT_PUBLIC_SERVER_URI;
+
+// export const getTasks = async (search = "",) => {
+//   const res = await fetch(
+//     `${serverBaseUrl}/api/tasks?search=${search}`,
+//     {
+//       cache: "no-store",
+//     }
+//   );
+
+//   const data = await res.json();
+
+// //   console.log(data);
+
+//   return data;
+// };

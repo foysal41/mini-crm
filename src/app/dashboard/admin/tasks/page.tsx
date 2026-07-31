@@ -1,14 +1,25 @@
 import DeleteTaskButton from "@/app/components/dashboard/DeleteTaskButton";
+import Pagination from "@/app/components/dashboard/Pagination";
 import SearchTask from "@/app/components/SearchTask";
-
 import { getTasks } from "@/app/lib/api/tasks";
+
 import { CreateTask } from "@/types/createTask";
 import { Button } from "@heroui/react";
 import Link from "next/link";
 
-const Tasks = async ({searchParams,}:{searchParams: Promise<{ search?: string }>;}) => {
-   const params = await searchParams;
-    const tasks = await getTasks(params.search || "");
+const Tasks = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string; page?: string }>;
+}) => {
+  const params = await searchParams;
+
+  const search = params.search || "";
+  const page = Number(params.page) || 1;
+
+  const data = await getTasks(search, page);
+
+  const tasks = data.tasks;
 
   return (
     <div className="space-y-6 ">
@@ -116,6 +127,12 @@ const Tasks = async ({searchParams,}:{searchParams: Promise<{ search?: string }>
           <div className="py-12 text-center text-gray-500">No tasks found.</div>
         )}
       </div>
+
+      <Pagination
+        currentPage={data.currentPage}
+        totalPages={data.totalPages}
+        search={search}
+      />
     </div>
   );
 };
