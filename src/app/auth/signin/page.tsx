@@ -43,7 +43,7 @@ const Signin = () => {
       toast.success("Login successful!");
 
       setTimeout(() => {
-        router.push("/");
+        router.push("/dashboard/admin");
         router.refresh();
       }, 500);
     }

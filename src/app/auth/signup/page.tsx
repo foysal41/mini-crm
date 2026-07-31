@@ -20,7 +20,7 @@ const SignUp = () => {
             password,
             email,
             role,
-            callbackURL: "/auth/signin",
+            callbackURL: "/dashboard/admin",
         });
 
         if (error) {
