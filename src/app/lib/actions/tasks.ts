@@ -1,16 +1,21 @@
-'use server'
+"use server";
 
-import { CreateTask } from "@/types/createTask"
+import { CreateTask } from "@/types/createTask";
+import { serverMutation } from "../core/server";
 
-const serverBaseUrl = process.env.SERVER_URI
-export const createTask = async(newTaskData:CreateTask) => {
-    const res = await fetch(`${serverBaseUrl}/api/tasks`, {
-        method: "POST",
-        headers: {
-            'Content-Type' : 'application/json',
-        },
-        body:JSON.stringify(newTaskData),
-    })
+export const createTask = async (newTaskData: CreateTask) => {
+  return serverMutation("/api/tasks", newTaskData);
+};
 
-    return res.json()
-}
+
+// export const createTask = async(newTaskData:CreateTask) => {
+//     const res = await fetch(`${serverBaseUrl}/api/tasks`, {
+//         method: "POST",
+//         headers: {
+//             'Content-Type' : 'application/json',
+//         },
+//         body:JSON.stringify(newTaskData),
+//     })
+
+//     return res.json()
+// }

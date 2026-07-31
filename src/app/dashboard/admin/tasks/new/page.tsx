@@ -5,40 +5,59 @@ import { Button, Card } from "@heroui/react";
 import { toast } from "react-toastify";
 import { createTask } from "@/app/lib/actions/tasks";
 import { Priority, Status } from "@/types/createTask";
+import { useRouter } from "next/navigation";
+import { useSession } from "@/app/lib/auth-client";
 
 const NewTask = () => {
+  const router = useRouter();
   const [taskName, setTaskName] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [priority, setPriority] = useState<Priority>("Medium");
   const [status, setStatus] = useState<Status>("Pending");
   const [description, setDescription] = useState("");
+  const { data: session } = useSession();
+  const user = session?.user;
 
-  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if ( !taskName || !assignedTo || !dueDate || !priority || !status || !description ) {
+    if (
+      !taskName ||
+      !assignedTo ||
+      !dueDate ||
+      !priority ||
+      !status ||
+      !description
+    ) {
       toast.error("Please fill in all fields.");
       return;
     }
 
-    const taskData = { taskName, assignedTo, dueDate, priority, status, description, };
+    const taskData = {
+      taskName,
+      assignedTo,
+      dueDate,
+      priority,
+      status,
+      description,
+      createdBy: user?.name,
+      createdByEmail: user?.email,
+      role: user?.role,
+    };
 
-    // Reset Form
-    setTaskName("");
-    setAssignedTo("");
-    setDueDate("");
-    setPriority("Medium");
-    setStatus("Pending");
-    setDescription("");
+    const res = await createTask(taskData);
 
-
-
-    const res = await createTask(taskData)
-    if(res.insertedId){
-        toast.success("Task posted successfully");
-        e.currentTarget.reset()
-
+    if (res.insertedId) {
+      toast.success("Task posted successfully");
+      // Reset Form
+      setTaskName("");
+      setAssignedTo("");
+      setDueDate("");
+      setPriority("Medium");
+      setStatus("Pending");
+      setDescription("");
+      router.push("/dashboard/admin/tasks");
     }
   };
 
@@ -46,9 +65,7 @@ const NewTask = () => {
     <main className="mx-auto max-w-3xl py-10">
       <Card className="rounded-3xl border border-gray-200 bg-white p-8 shadow-lg">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">
-            Create New Task
-          </h2>
+          <h2 className="text-3xl font-bold text-gray-900">Create New Task</h2>
 
           <p className="mt-2 text-gray-500">
             Fill in the information below to create a new task.
@@ -56,7 +73,6 @@ const NewTask = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-
           {/* Task Name */}
           <div>
             <label className="mb-2 block text-sm font-semibold">
@@ -89,9 +105,7 @@ const NewTask = () => {
 
           {/* Due Date */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              Due Date
-            </label>
+            <label className="mb-2 block text-sm font-semibold">Due Date</label>
 
             <input
               type="date"
@@ -103,9 +117,7 @@ const NewTask = () => {
 
           {/* Priority */}
           <div>
-            <label className="mb-3 block text-sm font-semibold">
-              Priority
-            </label>
+            <label className="mb-3 block text-sm font-semibold">Priority</label>
 
             <div className="flex flex-wrap gap-5">
               {["High", "Medium", "Low"].map((item) => (
@@ -130,9 +142,7 @@ const NewTask = () => {
 
           {/* Status */}
           <div>
-            <label className="mb-2 block text-sm font-semibold">
-              Status
-            </label>
+            <label className="mb-2 block text-sm font-semibold">Status</label>
 
             <select
               value={status}
