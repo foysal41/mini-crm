@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Link, Button } from "@heroui/react";
 import { Bars, Xmark } from "@gravity-ui/icons";
-import { useSession } from "../lib/auth-client";
 
 const navItems = [
   { name: "Features", href: "#" },
@@ -14,9 +13,7 @@ const navItems = [
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const {data:session, isPending} = useSession();
-  const user = session?.user
-  console.log(user)
+
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-default-200 bg-background/80 backdrop-blur-lg">
@@ -79,6 +76,9 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
+
+
+           
 
             <Button  className="mt-2 w-full  cursor-pointer border-2 border-amber-900">
               Get Started
