@@ -1,4 +1,4 @@
-const serverBaseUrl = process.env.SERVER_URI ?? "";
+const serverBaseUrl = process.env.NEXT_PUBLIC_SERVER_URI ?? "";
 
 export const serverMutation = async (path:string, data:unknown)=> {
     const res = await fetch(`${serverBaseUrl}${path}` , {

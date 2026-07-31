@@ -1,19 +1,25 @@
+import DeleteTaskButton from "@/app/components/dashboard/DeleteTaskButton";
 import { getTasks } from "@/app/lib/api/tasks";
 import { CreateTask } from "@/types/createTask";
+import { Button } from "@heroui/react";
+import Link from "next/link";
 
 const Tasks = async () => {
   const tasks = await getTasks();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 ">
       {/* Heading */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Tasks</h1>
-          <p className="mt-1 text-gray-500">
-            Manage all tasks from one place.
-          </p>
+
+          <p className="mt-1 text-gray-500">Manage all tasks from one place.</p>
         </div>
+
+        <Link href="/dashboard/admin/tasks/new" className="mr-23">
+          <Button>+ Add Task</Button>
+        </Link>
       </div>
 
       {/* Table */}
@@ -28,6 +34,7 @@ const Tasks = async () => {
                 <th className="px-6 py-4">Priority</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4">Description</th>
+                <th className="px-6 py-4 text-center">Actions</th>
               </tr>
             </thead>
 
@@ -43,14 +50,10 @@ const Tasks = async () => {
                   </td>
 
                   {/* Assigned To */}
-                  <td className="px-6 py-4 text-gray-600">
-                    {task.assignedTo}
-                  </td>
+                  <td className="px-6 py-4 text-gray-600">{task.assignedTo}</td>
 
                   {/* Due Date */}
-                  <td className="px-6 py-4 text-gray-600">
-                    {task.dueDate}
-                  </td>
+                  <td className="px-6 py-4 text-gray-600">{task.dueDate}</td>
 
                   {/* Priority */}
                   <td className="px-6 py-4">
@@ -60,8 +63,8 @@ const Tasks = async () => {
                           task.priority === "High"
                             ? "bg-red-100 text-red-600"
                             : task.priority === "Medium"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : "bg-green-100 text-green-700"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-green-100 text-green-700"
                         }`}
                     >
                       {task.priority}
@@ -76,8 +79,8 @@ const Tasks = async () => {
                           task.status === "Completed"
                             ? "bg-green-100 text-green-700"
                             : task.status === "In Progress"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-orange-100 text-orange-700"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-orange-100 text-orange-700"
                         }`}
                     >
                       {task.status}
@@ -86,9 +89,17 @@ const Tasks = async () => {
 
                   {/* Description */}
                   <td className="max-w-sm px-6 py-4 text-sm text-gray-600">
-                    <p className="line-clamp-2">
-                      {task.description}
-                    </p>
+                    <p className="line-clamp-2">{task.description}</p>
+                  </td>
+
+                  <td className="px-6 py-4">
+                    <div className="flex items-center justify-center gap-2">
+                      <Link href={`/dashboard/admin/tasks/edit/${task._id}`}>
+                        <Button size="sm">Edit</Button>
+                      </Link>
+
+                      <DeleteTaskButton id={task._id!} />
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -97,9 +108,7 @@ const Tasks = async () => {
         </div>
 
         {tasks.length === 0 && (
-          <div className="py-12 text-center text-gray-500">
-            No tasks found.
-          </div>
+          <div className="py-12 text-center text-gray-500">No tasks found.</div>
         )}
       </div>
     </div>

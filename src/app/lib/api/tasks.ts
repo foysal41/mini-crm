@@ -1,6 +1,6 @@
 import { CreateTask } from "@/types/createTask"
 
-const serverBaseUrl = process.env.SERVER_URI
+const serverBaseUrl = process.env.NEXT_PUBLIC_SERVER_URI
 
 export const getTasks = async():Promise<CreateTask[]>=>{
     const res = await fetch(`${serverBaseUrl}/api/tasks` , {
