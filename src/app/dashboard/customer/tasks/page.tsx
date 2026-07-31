@@ -1,11 +1,10 @@
-import DeleteTaskButton from "@/app/components/dashboard/DeleteTaskButton";
+
 import Pagination from "@/app/components/dashboard/Pagination";
 import SearchTask from "@/app/components/SearchTask";
 import { getTasks } from "@/app/lib/api/tasks";
 
 import { CreateTask } from "@/types/createTask";
-import { Button } from "@heroui/react";
-import Link from "next/link";
+
 
 const Tasks = async ({
   searchParams,
@@ -31,9 +30,7 @@ const Tasks = async ({
           <p className="mt-1 text-gray-500">Manage all tasks from one place.</p>
         </div>
 
-        <Link href="/dashboard/admin/tasks/new" className="mr-5">
-          <Button>+ Add Task</Button>
-        </Link>
+       
       </div>
 
       <SearchTask />
@@ -50,7 +47,7 @@ const Tasks = async ({
                 <th className="px-6 py-4">Priority</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4">Description</th>
-                <th className="px-6 py-4 text-center">Actions</th>
+               
               </tr>
             </thead>
 
@@ -108,15 +105,7 @@ const Tasks = async ({
                     <p className="line-clamp-2">{task.description}</p>
                   </td>
 
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-center gap-2">
-                      <Link href={`/dashboard/admin/tasks/edit/${task._id}`}>
-                        <Button  style={{ color: "#1447E6" , backgroundColor: "transparent", }} size="sm">Edit</Button>
-                      </Link>
-
-                      <DeleteTaskButton  id={task._id!} />
-                    </div>
-                  </td>
+                 
                 </tr>
               ))}
             </tbody>

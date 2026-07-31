@@ -42,10 +42,17 @@ const Signin = () => {
     if (data) {
       toast.success("Login successful!");
 
-      setTimeout(() => {
+      const session = await authClient.getSession();
+
+      const role = session.data?.user?.role?.toLowerCase();
+
+      if (role === "admin") {
         router.push("/dashboard/admin");
-        router.refresh();
-      }, 500);
+      } else {
+        router.push("/dashboard/admin");
+      }
+
+      router.refresh();
     }
   };
 
@@ -54,9 +61,7 @@ const Signin = () => {
       <Card className="w-full max-w-105 rounded-3xl border border-gray-200 bg-white px-6 py-7 shadow-xl">
         {/* Heading */}
         <div className="text-center">
-          <h1 className="text-2xl font-semibold text-gray-900">
-            Welcome Back
-          </h1>
+          <h1 className="text-2xl font-semibold text-gray-900">Welcome Back</h1>
 
           <p className="mt-2 text-sm text-gray-500">
             Sign in to continue to Mini CRM

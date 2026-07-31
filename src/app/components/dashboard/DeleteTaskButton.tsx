@@ -37,7 +37,7 @@ const DeleteTaskButton = ({ id }: Props) => {
   };
 
   return (
-    <Button size="sm" onPress={handleDelete}>
+    <Button style={{ color: "red", backgroundColor: "transparent", }} size="sm" onPress={handleDelete}>
       Delete
     </Button>
   );

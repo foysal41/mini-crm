@@ -3,17 +3,35 @@
 import { useState } from "react";
 import { Link, Button } from "@heroui/react";
 import { Bars, Xmark } from "@gravity-ui/icons";
-
-const navItems = [
-  { name: "Features", href: "/features" },
-  { name: "Pricing", href: "/pricing" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
-];
+import { authClient, useSession } from "../lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter();
+  const { data: session, isPending } = useSession();
+  const user = session?.user;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const navItems = [
+    { name: "Features", href: "/features" },
+    { name: "Pricing", href: "/pricing" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+  ];
+
+  if (!isPending && session?.user) {
+    navItems.splice(1, 0, {
+      name: "Dashboard",
+      href: "/dashboard",
+    });
+  }
+
+  const handleLogout = async () => {
+    await authClient.signOut();
+
+    router.push("/auth/signin");
+    router.refresh();
+  };
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-default-200 bg-background/80 backdrop-blur-lg">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
@@ -40,12 +58,20 @@ const Navbar = () => {
         </ul>
 
         {/* Desktop Button */}
-        <div className="hidden md:block">
-          <Link href="/auth/signup">
-              <Button className="mt-2 w-full cursor-pointer ">
-                Get Started
+        <div className="hidden items-center gap-4 md:flex">
+          {user ? (
+            <>
+              <span>Hi, {user.name}</span>
+
+              <Button onPress={handleLogout} style={{ backgroundColor: "red" }}>
+                Logout
               </Button>
+            </>
+          ) : (
+            <Link href="/auth/signup">
+              <Button>Get Started</Button>
             </Link>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -78,11 +104,24 @@ const Navbar = () => {
               </li>
             ))}
 
-            <Link href="/auth/signup">
-              <Button className="mt-2 w-full cursor-pointer border-2 border-amber-900">
-                Get Started
-              </Button>
-            </Link>
+            <div className="flex flex-col gap-4 md:flex">
+              {user ? (
+                <>
+                  <span>Hi, {user.name}</span>
+
+                  <Button
+                    onPress={handleLogout}
+                    style={{ backgroundColor: "red" }}
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Link href="/auth/signup">
+                  <Button>Get Started</Button>
+                </Link>
+              )}
+            </div>
           </ul>
         </div>
       )}

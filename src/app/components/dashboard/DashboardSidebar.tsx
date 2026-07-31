@@ -1,20 +1,31 @@
+"use client";
 import React, { ComponentType, SVGProps } from "react";
 import {LayoutSideContentLeft, Persons, ListCheck, Person , ArrowRightFromSquare, House, PersonMagnifier} from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
+import { useSession } from "@/app/lib/auth-client";
 
 const DashboardSidebar = () => {
+
+  const { data: session } = useSession();
+
+const role = session?.user?.role?.toLowerCase();
+
+const basePath =
+  role === "admin" ? "/dashboard/admin" : "/dashboard/customer";
+
+
+
   const navItems: {
     icon: ComponentType<SVGProps<SVGSVGElement>>;
     label: string; 
     href: string;
   }[] = [
     { icon: House, label: "Dashboard", href: "/dashboard/admin", },
-    { icon: Persons, label: "Customers", href: "/dashboard/admin/customers", },
-    { icon: ListCheck, label: "Tasks",  href: "/dashboard/admin/tasks", },
-    { icon: PersonMagnifier, label: "Users", href: "/dashboard/admin/users",  },
-    { icon: Person, label: "Profile" , href: "/dashboard/profile",},
-    { icon: ArrowRightFromSquare, label: "Logout" , href: "/logout",},
+    { icon: Persons, label: "Customers", href: `${basePath}/customers`, },
+    { icon: ListCheck, label: "Tasks",  href: `${basePath}/tasks`, },
+    { icon: Person, label: "Profile" , href: `${basePath}/profile`,},
+   
   ];
 
   const navContent = (
