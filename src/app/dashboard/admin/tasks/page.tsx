@@ -1,11 +1,14 @@
 import DeleteTaskButton from "@/app/components/dashboard/DeleteTaskButton";
+import SearchTask from "@/app/components/SearchTask";
+
 import { getTasks } from "@/app/lib/api/tasks";
 import { CreateTask } from "@/types/createTask";
 import { Button } from "@heroui/react";
 import Link from "next/link";
 
-const Tasks = async () => {
-  const tasks = await getTasks();
+const Tasks = async ({searchParams,}:{searchParams: Promise<{ search?: string }>;}) => {
+   const params = await searchParams;
+    const tasks = await getTasks(params.search || "");
 
   return (
     <div className="space-y-6 ">
@@ -21,6 +24,8 @@ const Tasks = async () => {
           <Button>+ Add Task</Button>
         </Link>
       </div>
+
+      <SearchTask />
 
       {/* Table */}
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
