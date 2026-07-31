@@ -36,7 +36,7 @@ const SignUp = () => {
 
     return (
         <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-20">
-            <Card className="w-full max-w-[420px] rounded-3xl border border-gray-200 bg-white px-6 py-7 shadow-xl">
+            <Card className="w-full max-w-105 rounded-3xl border border-gray-200 bg-white px-6 py-7 shadow-xl">
                 <div className="text-center">
                     <h1 className="text-2xl font-semibold text-gray-900">
                         Create an account
