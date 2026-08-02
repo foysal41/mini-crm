@@ -3,8 +3,9 @@
 A modern Mini Customer Relationship Management (CRM) System developed as part of the **BDKRISHI Technical Practical Assignment**. The application enables administrators and staff members to manage daily tasks efficiently through a secure authentication system and an intuitive dashboard.
 
 ---
-Server Link: https://mini-crm-server-kk37.onrender.com
-Live link: https://mini-crm-two-pied.vercel.app/
+Server Link: https://mini-crm-server-kk37.onrender.com </br>
+Live link: https://mini-crm-two-pied.vercel.app/ </br>
+presentaion Video: https://drive.google.com/file/d/1qpnVxYR7VCeIdvIBzD_XdyvuVsYN3KTt/view?usp=sharing
 
 ## Project Overview
 
